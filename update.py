@@ -8,9 +8,10 @@ import crawler
 
 TIMESTAMP = int(time.time() * 1000)
 INDEX = sys.argv[1]
-LATEST_LOG = os.path.join('.', 'conf', INDEX + '_latest.json')
-LATEST_FILE = os.path.join('.', 'latest', INDEX + '.json')
-EXPORT_FILE = os.path.join('.', 'hist', INDEX, str(TIMESTAMP) + '.json')
+PATH = sys.argv[2]
+LATEST_LOG = os.path.join(PATH, 'conf', INDEX + '_latest.json')
+LATEST_FILE = os.path.join(PATH, 'latest', INDEX + '.json')
+EXPORT_FILE = os.path.join(PATH, 'hist', INDEX, str(TIMESTAMP) + '.json')
 
 os.makedirs(os.path.split(EXPORT_FILE)[0], exist_ok = True)
 os.makedirs(os.path.split(LATEST_FILE)[0], exist_ok = True)
@@ -35,9 +36,13 @@ def write_update(course_data, md5_data):
                 latest_md5 = None
                 ok = False    
             if not ok or cur_md5 != latest_md5:
-                latest_log[name] = dict()
+                if not name in latest_log:
+                    latest_log[name] = dict()
                 latest_log[name]['md5'] = cur_md5
                 latest_log[name]['timestamp'] = TIMESTAMP
+                if not 'hist_ver' in latest_log[name]:
+                    latest_log[name]['hist_ver'] = []
+                latest_log[name]['hist_ver'].append(TIMESTAMP)
                 new_course_file[name] = course_data[name]
             bar.update(1)
     with open(EXPORT_FILE, 'w') as file:
@@ -59,7 +64,7 @@ def create_latest():
             bar.update(1)
     with tqdm.tqdm(total = len(file.keys())) as bar:
         for ts in file.keys():
-            path = os.path.join('.', 'hist', INDEX, str(ts) + '.json')
+            path = os.path.join(PATH, 'hist', INDEX, str(ts) + '.json')
             with open(path, 'r') as fp:
                 tmp = json.load(fp)
                 for name in file[ts]:
