@@ -119,3 +119,4 @@ dmypy.json
 hist/
 conf/
 latest/
+.DS_Store
