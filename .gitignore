@@ -20,6 +20,10 @@ parts/
 sdist/
 var/
 wheels/
+<<<<<<< HEAD
+=======
+pip-wheel-metadata/
+>>>>>>> pr/2
 share/python-wheels/
 *.egg-info/
 .installed.cfg
@@ -113,3 +117,9 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+
+# Customized ignored files
+hist/
+conf/
+latest/
+.DS_Store
