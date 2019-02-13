@@ -9,6 +9,7 @@ import crawler
 TIMESTAMP = int(time.time() * 1000)
 INDEX = sys.argv[1]
 PATH = sys.argv[2]
+FORCE_UPDATE_FILE = os.path.join(PATH, 'force_update.txt')
 LATEST_LOG = os.path.join(PATH, 'conf', INDEX + '_latest.json')
 LATEST_FILE = os.path.join(PATH, 'latest', INDEX + '.json')
 EXPORT_FILE = os.path.join(PATH, 'hist', INDEX, str(TIMESTAMP) + '.json')
@@ -16,6 +17,15 @@ EXPORT_FILE = os.path.join(PATH, 'hist', INDEX, str(TIMESTAMP) + '.json')
 os.makedirs(os.path.split(EXPORT_FILE)[0], exist_ok = True)
 os.makedirs(os.path.split(LATEST_FILE)[0], exist_ok = True)
 os.makedirs(os.path.split(LATEST_LOG)[0], exist_ok = True)
+
+def force_update():
+    if os.path.exists(FORCE_UPDATE_FILE):
+        return True
+    return False
+
+def delete_force_update():
+    if os.path.exists(FORCE_UPDATE_FILE):
+        os.remove(FORCE_UPDATE_FILE)
 
 def write_update(course_data, md5_data):
     latest_log = None
@@ -35,7 +45,7 @@ def write_update(course_data, md5_data):
             except:
                 latest_md5 = None
                 ok = False    
-            if not ok or cur_md5 != latest_md5:
+            if force_update() or not ok or cur_md5 != latest_md5:
                 if not name in latest_log:
                     latest_log[name] = dict()
                 latest_log[name]['md5'] = cur_md5
@@ -80,3 +90,4 @@ if __name__ == '__main__':
     write_update(ret[0], ret[1])
     print('[INFO] Writing the latest info ...')
     create_latest()
+    delete_force_update()
