@@ -10,7 +10,7 @@ def get_major_list(index):
     url = 'https://w5.ab.ust.hk/wcq/cgi-bin/' + str(index) + '/'
     url_sub = url + 'subject/'
     r = requests.get(url)
-    reg = '/wcq/cgi-bin/1830/subject/([A-Z]+)'
+    reg = '/wcq/cgi-bin/' + str(index) + '/subject/([A-Z]+)'
     ret = re.findall(reg, r.text)
     res = []
     for x in ret:
