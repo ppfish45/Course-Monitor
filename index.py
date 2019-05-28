@@ -61,7 +61,7 @@ if __name__ == '__main__':
             bar.update(1)
 
     sem_info = {
-        'semCode' : CODE,
+        'semCode' : int(CODE),
         'startTime' : start_time,
         'endTime' : end_time,
         'courses' : list(ret.keys())
