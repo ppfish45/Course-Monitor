@@ -88,7 +88,7 @@ def crawl(index, generate_md5 = True):
                 result[course_code] = {
                     'course_code' : course_code,
                     'course_name' : course_name,
-                    'course_cretid' : course_credit,
+                    'course_credit' : course_credit,
                     'course_slots' : course_slots
                 }
                 if generate_md5:
