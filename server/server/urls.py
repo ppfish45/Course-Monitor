@@ -19,6 +19,7 @@ from django.urls import path
 from . import respond
 
 urlpatterns = [
+    url(r'^start$', respond.default),
     url(r'^semester$', respond.semester),
     url(r'^courseSection$', respond.course),
     url(r'^sectionData$', respond.section),    

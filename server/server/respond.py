@@ -1,23 +1,26 @@
-from django.http import JsonResponse
 from . import retriever
 
-sem_list = {
-    'Spring 2019' : 1830
-}
+from server.json_rectifier import get_correct_json
+from server.json_rectifier import get_error_json
 
-def get_error_json(err_msg):
-    ret = dict()
-    ret['error'] = True
-    ret['errMsg'] = err_msg
-    return JsonResponse(ret)
+sem_list = [
+    {
+        'name' : 'Spring 2019',
+        'semCode' : 1830 
+    },
+    {
+        'name' : 'Summer 2019',
+        'semCode' : 1840
+    }
+]
+
+def default(request):
+    return get_correct_json(sem_list)
 
 def semester(request):
     if request.GET:
-        if 'semStr' in request.GET:
-            if request.GET['semStr'] in sem_list:
-                return retriever.get_sem_info(sem_list[request.GET['semStr']])
-            else:
-                return get_error_json('Incorrect semester name.')
+        if 'semCode' in request.GET:
+            return retriever.get_sem_info(request.GET['semCode'])
         else:
             return get_error_json('Parameter(s) missing.')
     else:
@@ -37,10 +40,15 @@ def section(request):
     if request.GET:
         if 'semCode' in request.GET and \
             'courseCode' in request.GET and \
-            'section' in request.GET and \
-            'startTime' in request.GET and \
-            'endTime' in request.GET:
-            return retriever.get_data(request.GET['semCode'], request.GET['courseCode'], request.GET['section'], request.GET['startTime'], request.GET['endTime'])
+            'section' in request.GET:
+            args = [
+                request.GET['semCode'],
+                request.GET['courseCode'],
+                request.GET['section'],
+                request.GET['startTime'] if 'startTime' in request.GET else -1,
+                request.GET['endTime'] if 'endTime' in request.GET else -1,
+                ]
+            return retriever.get_data(*args)
         else:
             return get_error_json('Parameter(s) missing.')
     else:

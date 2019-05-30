@@ -3,23 +3,15 @@ import sys
 import json
 import fcntl
 import bisect
+
 from django.http import JsonResponse
 from django.http import HttpResponse
 
+from server.json_rectifier import get_correct_json
+from server.json_rectifier import get_error_json
+
 data_path = os.path.abspath(os.path.join(os.path.realpath(__file__), '..', '..', '..'))
 index_path = os.path.join(data_path, 'index')
-
-def get_error_json(err_msg):
-    ret = dict()
-    ret['error'] = True
-    ret['errMsg'] = err_msg
-    return JsonResponse(ret)
-
-def get_correct_json(data):
-    ret = dict()
-    ret['error'] = False
-    ret['data'] = data
-    return JsonResponse(ret)
 
 def get_sem_info(sem_code):
     file_path = os.path.join(index_path, str(sem_code), 'info.json')
@@ -58,18 +50,15 @@ def get_data(sem_code, course_code, section_str, start_time, end_time):
             fcntl.flock(file.fileno(), fcntl.LOCK_SH)
             data = json.load(file)
             ret = data[section_str]
-            if int(start_time) < ret[0]['timestamp']:
-                delta = {
-                    "timestamp" : int(start_time),
-                    "avail" : 0,
-                    "enroll" : 0,
-                    "quota" : 0,
-                    "wait" : 0
-                }
-                ret.insert(0, delta)
             time_list = [x['timestamp'] for x in ret]
-            left = bisect.bisect_left(time_list, int(start_time), 0, len(time_list))
-            righ = bisect.bisect_right(time_list, int(end_time), 0, len(time_list))
+            if start_time == -1:
+                left = 0
+            else:
+                left = bisect.bisect_left(time_list, int(start_time), 0, len(time_list))
+            if end_time == -1:
+                righ = len(ret)
+            else:
+                righ = bisect.bisect_right(time_list, int(end_time), 0, len(time_list))
             ret = ret[left : righ]
             return get_correct_json(ret)
     except:
