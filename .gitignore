@@ -120,3 +120,4 @@ hist/
 conf/
 latest/
 .DS_Store
+server/server/settings_local.py

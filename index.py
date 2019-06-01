@@ -30,8 +30,10 @@ if __name__ == '__main__':
             if start_time == 0:
                 start_time = timestamp            
             end_time = timestamp
+            # print(file_name)
             with open(file_name, 'r') as file:
                 fcntl.flock(file.fileno(), fcntl.LOCK_SH)
+                # print(file.readlines())
                 data = json.load(file)
             for course in data:
                 course_data = data[course]
