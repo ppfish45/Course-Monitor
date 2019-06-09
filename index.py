@@ -26,7 +26,7 @@ if __name__ == '__main__':
 
     with tqdm.tqdm(total = len(file_list)) as bar:
         for file_name in file_list:
-            timestamp = int(int(os.path.split(file_name)[1].split('.')[0]) / 1000)
+            timestamp = int(os.path.split(file_name)[1].split('.')[0])
             if start_time == 0:
                 start_time = timestamp            
             end_time = timestamp
