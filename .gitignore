@@ -116,6 +116,7 @@ dmypy.json
 .pyre/
 
 # Customized ignored files
+index/
 hist/
 conf/
 latest/

@@ -1,1 +1,3 @@
 django
+django-dotenv
+django-cors-headers

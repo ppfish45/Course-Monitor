@@ -3,16 +3,13 @@ A script which monitors the enrollment status of courses of HKUST and keeps hist
 
 ## Before You Start
 
-Create a file 
+Create a `.env` file in the root folder of this repo (i.e. next to this README)
 
-    touch ./server/server/settings_local.py
+    touch .env
 
-Inside this file, add the following dict
+Inside this file, add the following variable to indicate the URL where the frontend page is hosted.
 
-    cors_headers = {
-        "Access-Control-Allow-Origin": "http://<ip and port of your frontend server>",
-        "Access-Control-Allow-Methods": "GET"
-    }
+    DATASERVER_REACT_APP_ORIGIN=<some origin>,<another origin seperated by comma>,<as many as you want>,<for example http://localhost:5000>
 
 ## Start
 

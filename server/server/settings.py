@@ -33,6 +33,7 @@ ALLOWED_HOSTS = [
 # Application definition
 
 INSTALLED_APPS = [
+    'corsheaders',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -42,6 +43,7 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -70,6 +72,21 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'server.wsgi.application'
+
+
+# CORS
+# https://github.com/ottoyiu/django-cors-headers
+
+CORS_ORIGIN_WHITELIST = [
+    # "http://ustcourse.me",
+    # "https://ustcourse.me",
+    # "http://localhost:3000",
+    i.strip() for i in os.environ.get("DATASERVER_REACT_APP_ORIGIN", "").split(",")
+]
+
+CORS_ALLOW_METHODS = [
+    "GET",
+]
 
 
 # Database
