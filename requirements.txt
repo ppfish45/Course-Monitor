@@ -1,3 +1,5 @@
+tqdm
+fcntl
 django
 django-dotenv
 django-cors-headers
