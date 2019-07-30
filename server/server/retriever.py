@@ -59,7 +59,7 @@ def get_data(sem_code, course_code, section_str, start_time, end_time):
             else:
                 righ = bisect.bisect_right(time_list, int(end_time), 0, len(time_list))
             ret = ret[left : righ]
-            if ret[len(ret) - 1].timestamp != end_time:
+            if ret[len(ret) - 1]["timestamp"] != end_time:
                 x = ret[len(ret) - 1]
                 x['timestamp'] = end_time
                 ret.append(x)
