@@ -27,31 +27,30 @@ if __name__ == '__main__':
     with tqdm.tqdm(total = len(file_list)) as bar:
         for file_name in file_list:
             timestamp = int(os.path.split(file_name)[1].split('.')[0])
-            if start_time == 0:
-                start_time = timestamp            
-            end_time = timestamp
-            # print(file_name)
             with open(file_name, 'r') as file:
                 fcntl.flock(file.fileno(), fcntl.LOCK_SH)
-                # print(file.readlines())
                 data = json.load(file)
-            for course in data:
-                course_data = data[course]
-                if course not in ret:
-                    ret[course] = dict()
-                sections = course_data['course_slots']
-                for section in sections:
-                    sec_name = section['section']
-                    if sec_name not in ret[course]:
-                        ret[course][sec_name] = []
-                    delta = {
-                        'timestamp' : timestamp,
-                        'avail' : int(section['avail']),
-                        'enroll' : int(section['enrol']),
-                        'quota' : int(re.match('\d+', section['quota'])[0]),
-                        'wait' : int(section['wait'])
-                    }
-                    ret[course][sec_name].append(delta)
+                if len(data) > 0:
+                    if start_time == 0:
+                        start_time = timestamp            
+                    end_time = timestamp
+                for course in data:
+                    course_data = data[course]
+                    if course not in ret:
+                        ret[course] = dict()
+                    sections = course_data['course_slots']
+                    for section in sections:
+                        sec_name = section['section']
+                        if sec_name not in ret[course]:
+                            ret[course][sec_name] = []
+                        delta = {
+                            'timestamp' : timestamp,
+                            'avail' : int(section['avail']),
+                            'enroll' : int(section['enrol']),
+                            'quota' : int(re.match('\d+', section['quota'])[0]),
+                            'wait' : int(section['wait'])
+                        }
+                        ret[course][sec_name].append(delta)
             bar.update(1)
     
     with tqdm.tqdm(total = len(ret)) as bar:

@@ -1,5 +1,6 @@
 import os
 import sys
+import copy
 import json
 import fcntl
 import bisect
@@ -44,25 +45,24 @@ def get_data(sem_code, course_code, section_str, start_time, end_time):
     file_path = os.path.join(index_path, sem_code, 'courses', file_name)
     if not os.path.exists(file_path):
         return get_error_json('Course does not exist.')
-    try:   
+    try:
         with open(file_path, 'r') as file:
             fcntl.flock(file.fileno(), fcntl.LOCK_SH)
             data = json.load(file)
-            ret = data[section_str]
-            time_list = [x['timestamp'] for x in ret]
+            data_all = data[section_str]
+            time_list = [x['timestamp'] for x in data_all]
             if start_time == -1:
                 left = 0
             else:
                 left = bisect.bisect_left(time_list, int(start_time), 0, len(time_list))
             if end_time == -1:
-                righ = len(ret)
+                righ = len(data_all)
             else:
                 righ = bisect.bisect_right(time_list, int(end_time), 0, len(time_list))
-            ret = ret[left : righ]
-            # 2 min gap
-            if end_time - ret[len(ret) - 1]["timestamp"] > 2 * 60 * 1000:
-                x = ret[len(ret) - 1]
-                x['timestamp'] = end_time
+            ret = data_all[left : righ]
+            if int(end_time) > ret[len(ret) - 1]['timestamp']:
+                x = copy.copy(ret[len(ret) - 1])
+                x['timestamp'] = int(end_time)
                 ret.append(x)
             return get_correct_json(ret)
     except:

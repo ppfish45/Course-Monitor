@@ -5,12 +5,16 @@ from server.json_rectifier import get_error_json
 
 sem_list = [
     {
-        'name' : 'Spring 2019',
-        'semCode' : 1830 
+        'name' : 'Fall 2019',
+        'semCode' : 1910
     },
     {
         'name' : 'Summer 2019',
         'semCode' : 1840
+    },
+    {
+        'name' : 'Spring 2019',
+        'semCode' : 1830 
     }
 ]
 
