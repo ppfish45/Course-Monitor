@@ -5,11 +5,14 @@ import tqdm
 import os
 import re
 from bs4 import BeautifulSoup
+from fake_useragent import UserAgent
 
 def get_major_list(index):
+    ua = UserAgent()
     url = 'https://w5.ab.ust.hk/wcq/cgi-bin/' + str(index) + '/'
     url_sub = url + 'subject/'
-    r = requests.get(url)
+    headers = {'User-Agent': ua.random}
+    r = requests.get(url, headers=headers)
     reg = '/wcq/cgi-bin/' + str(index) + '/subject/([A-Z]+)'
     ret = re.findall(reg, r.text)
     res = []
@@ -26,7 +29,7 @@ def crawl(index, generate_md5 = True):
     with tqdm.tqdm(total = len(major_list)) as bar:
         for maj in major_list:
             txt = requests.get(maj[1]).text
-            soup = BeautifulSoup(txt, 'lxml')
+            soup = BeautifulSoup(txt, 'html.parser')
             title = soup.find_all('h2')
             content = soup.find_all('table', {'class' : 'sections'})
             for i in range(len(title)):
