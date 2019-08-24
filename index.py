@@ -43,6 +43,8 @@ if __name__ == '__main__':
                         sec_name = section['section']
                         if sec_name not in ret[course]:
                             ret[course][sec_name] = []
+                        if '()' in  sec_name:
+                            continue
                         delta = {
                             'timestamp' : timestamp,
                             'avail' : int(section['avail']),
