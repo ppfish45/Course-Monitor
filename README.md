@@ -25,3 +25,7 @@ To run the backend server locally, execute
 To run remotely, 
 
     python server/manage.py runserver 0.0.0.0:8000
+
+## Related Project
+
+[Course-Monitor-Web](https://github.com/fhfuih/Course-Monitor-Web) - The frontend of course monitor project
