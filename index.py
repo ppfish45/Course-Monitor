@@ -54,6 +54,20 @@ if __name__ == '__main__':
                         }
                         ret[course][sec_name].append(delta)
             bar.update(1)
+
+    with tqdm.tqdm(total = len(ret)) as bar:
+        for course in ret:
+            for section in ret[course]:
+                ref = ret[course][section]
+                length = len(ref)
+                inc = 0
+                for i in range(0, length):
+                    if i > 0:
+                        inc += max(0, ref[i]['enroll'] - ref[i - 1]['enroll'])
+                    ref[i]['inc'] = inc
+                for i in range(0, length):
+                    ref[i]['dec'] = inc - ref[i]['inc']
+            bar.update(1)
     
     with tqdm.tqdm(total = len(ret)) as bar:
         for course in ret:
