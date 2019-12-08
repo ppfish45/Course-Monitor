@@ -5,13 +5,11 @@ import tqdm
 import os
 import re
 from bs4 import BeautifulSoup
-from fake_useragent import UserAgent
 
 def get_major_list(index):
-    ua = UserAgent()
     url = 'https://w5.ab.ust.hk/wcq/cgi-bin/' + str(index) + '/'
     url_sub = url + 'subject/'
-    headers = {'User-Agent': ua.random}
+    headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.169 Safari/537.36'}
     r = requests.get(url, headers=headers)
     reg = '/wcq/cgi-bin/' + str(index) + '/subject/([A-Z]+)'
     ret = re.findall(reg, r.text)
