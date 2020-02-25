@@ -33,6 +33,8 @@ def crawl(index, generate_md5 = True):
             for i in range(len(title)):
                 reg = '([A-Z0-9 ]+) - ([\s\S]+) \(([0-9])'
                 re_ret = re.match(reg, title[i].get_text())
+                if re_ret == None:
+                    continue
                 course_code = re_ret[1].replace(' ', '')
                 course_name = re_ret[2]
                 course_credit = re_ret[3]
