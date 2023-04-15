@@ -1,0 +1,7 @@
+[mongodb]
+connstr = 
+dbname = coursemonitor
+defaultCollName = default
+semesterCollName = semester
+courseCollName = course
+sectionCollName = section
