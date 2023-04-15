@@ -69,6 +69,12 @@ sem_list = [
 ]
 
 """
+Put the conf and index folder under:
+../conf
+../index
+"""
+
+"""
 Collection #1: Default
 {
     "name": "2022-23 Spring",
@@ -199,6 +205,7 @@ def upload_course_and_section_coll(client: db.DBClient):
                             "data": filter_data(data),
                         }
                     }, upsert=True)
+
 
 if __name__ == '__main__':
     client = db.DBClient()
