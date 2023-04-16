@@ -42,7 +42,7 @@ def get_current_semester(now):
     """
     Fall: Aug 20 - Sep 20
     Winter: Nov 10 - Jan 20
-    Spring: Jan 10 - Feb 25
+    Spring: Jan 15 - Feb 25
     Summer: Apr 20 - Jul 20
     """
 
@@ -84,7 +84,7 @@ def get_current_semester(now):
         },
         {
             "name": "Spring",
-            "start": datetime.date(2, 1, 10),
+            "start": datetime.date(2, 1, 15),
             "end": datetime.date(2, 2, 25),
         },
         {
